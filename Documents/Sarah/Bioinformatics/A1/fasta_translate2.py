@@ -13,25 +13,22 @@ def readCodon(codonFile):
     return codonDict
 
 def readFasta():
-    lines = []
-    l = sys.stdin.readline()
-    while l is not "\n":
-        lines.append(l)
-        l = sys.stdin.readline()
+    l = sys.stdin.read()
+    lines = l.split("\n")
 
     seqdict = {}
     descriptor = ''
     seq = ''
 
     for line in lines:
-
-        if line[0] == '>':
-            if descriptor:
-                seqdict[descriptor] = seq
-                seq = ''
-            descriptor = line[1:]
-        else:
-            seq = seq + line
+        if line:
+            if line[0] == '>':
+                if descriptor:
+                    seqdict[descriptor] = seq
+                    seq = ''
+                descriptor = line[1:]
+            else:
+                seq = seq + line
     seqdict[descriptor] = seq
 
     return seqdict
