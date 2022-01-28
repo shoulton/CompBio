@@ -1,10 +1,7 @@
 import sys
 
 lines = []
-l = sys.stdin.readline()
-while l != "\n":
-    lines.append(l)
-    l = sys.stdin.readline()
+l = sys.stdin.read()
 
 seqdict = {}
 descriptor = ''
