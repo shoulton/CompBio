@@ -2,6 +2,7 @@ import sys
 
 lines = []
 l = sys.stdin.read()
+print(l)
 
 seqdict = {}
 descriptor = ''
