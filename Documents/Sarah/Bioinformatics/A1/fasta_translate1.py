@@ -2,7 +2,7 @@ import sys
 
 lines = []
 l = sys.stdin.readline()
-while l is not "\n":
+while l != "\n":
     lines.append(l)
     l = sys.stdin.readline()
 
