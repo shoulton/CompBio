@@ -30,7 +30,6 @@ def readFasta():
             else:
                 seq = seq + line
     seqdict[descriptor] = seq
-
     return seqdict
 
 def translate(codonDict, fastaDict):
