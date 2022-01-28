@@ -1,8 +1,9 @@
 import sys
 
-lines = []
 l = sys.stdin.read()
 print(l)
+lines = l.split("\n")
+print(lines)
 
 seqdict = {}
 descriptor = ''
