@@ -44,6 +44,7 @@ def translate(codonDict, fastaDict):
             trio = trio + char
         if len(trio) == 3:
             translatedSeq = translatedSeq + codonDict.get(trio)
+            trio = ''
     return id, translatedSeq
 
 if __name__ == "__main__":
