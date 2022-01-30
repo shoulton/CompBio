@@ -1,3 +1,4 @@
+
 import sys
 
 def readCodon(codonFile):
@@ -33,7 +34,7 @@ def readFasta():
     return seqdict
 
 def translate(codonDict, fastaDict):
-    id = fastaDict.keys()[0]
+    id = fastaDict.keys[0]
     seq = fastaDict[id].strip()
     translatedSeq = ''
 
