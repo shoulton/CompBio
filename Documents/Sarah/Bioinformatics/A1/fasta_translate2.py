@@ -33,7 +33,7 @@ def readFasta():
     return seqdict
 
 def translate(codonDict, fastaDict):
-    keys = fastaDict.keys()
+    keys = list(fastaDict.keys())
     print(keys)
     print(type(keys))
     id = keys[0]
