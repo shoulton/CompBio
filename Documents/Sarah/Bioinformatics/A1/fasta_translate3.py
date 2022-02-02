@@ -34,8 +34,8 @@ def readFasta():
 
 def translate(codonDict, fastaDict):
     keys = list(fastaDict.keys())
-    translatedSeq = ''
     for key in keys:
+        translatedSeq = ''
         seq = fastaDict[key].strip()
         trio = ''
         for char in seq:
