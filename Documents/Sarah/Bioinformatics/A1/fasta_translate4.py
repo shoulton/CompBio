@@ -49,7 +49,8 @@ def translate(codonDict, fastaDict):
             if len(trio) == 3:
                 acid = codonDict.get(trio, "error")
                 if acid == "error":
-                    sys.stderr( "Invalid codon: " + trio + "\n", file=sys.stderr)
+                    errorMessage = "Invalid codon: " + trio + "\n"
+                    sys.stderr.write(errorMessage, file=sys.stderr)
                 translatedSeq = translatedSeq + codonDict.get(trio)
                 trio = ''
         print(">" + key + "\n" + translatedSeq + "\n")
