@@ -6,9 +6,14 @@ def readCodon(codonFile):
         codonDict = {}
         while line:
             splitLine = line.split()
-            nucleotides = splitLine[0].strip()
+            nucleotides = splitLine[2].strip()
             acid = splitLine[1].strip()
-            codonDict[nucleotides] = acid
+            splitNucleotides = nucleotides.split(',')
+            for codon in splitNucleotides:
+                if codon in codonDict:
+                    codonDict[codon] = codonDict[codon].append(acid)
+                else:
+                    codonDict[codon] = acid
             line = cf.readline()
     return codonDict
 
@@ -34,8 +39,8 @@ def readFasta():
 
 def translate(codonDict, fastaDict):
     keys = list(fastaDict.keys())
-    translatedSeq = ''
     for key in keys:
+        translatedSeq = ''
         seq = fastaDict[key].strip()
         trio = ''
         for char in seq:
@@ -44,13 +49,13 @@ def translate(codonDict, fastaDict):
             if len(trio) == 3:
                 acid = codonDict.get(trio, "error")
                 if acid == "error":
-                    sys.stderr( "Found a nucleotide sequence not described in the codon file", file=sys.stderr)
+                    sys.stderr( "Invalid codon: " + trio + "\n", file=sys.stderr)
                 translatedSeq = translatedSeq + codonDict.get(trio)
                 trio = ''
         print(">" + key + "\n" + translatedSeq + "\n")
 
 if __name__ == "__main__":
-    codonFile = 'codon_table.txt'
+    codonFile = 'codon_table_hard.txt'
     codonDict = readCodon(codonFile)
     fastaDict = readFasta()
     translate(codonDict, fastaDict)
