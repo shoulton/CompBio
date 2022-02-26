@@ -22,7 +22,6 @@ def b_given_X(b, x):
 def likelihood_of_genotypes(bases):
     diploid_genotypes = [('A','A'), ('C','C'), ('G','G'), ('T','T'), ('A','C'), ('A','G'), ('A','T'), ('C','G'), ('C','T'), ('G','T')]
     best_genotype = {}
-    #print("bases: ", ",".join(bases))
     for base in bases:
         score = 1.0
         for G in diploid_genotypes:
@@ -34,24 +33,21 @@ def likelihood_of_genotypes(bases):
             best_genotype[key] *= score
         
     max_key = max(best_genotype, key = best_genotype.get)
+    #print(best_genotype)
     best_score = math.log(best_genotype[max_key])
     return (max_key, best_score)
 
 
 def likelihood_of_cancer(bases, G):
-    best_genotype = {}
+    best_score = 1.0
+    
     for base in bases:
         score = b_given_X_Y(base.upper(), G[0], G[1])
-        key = ''.join(G)
-        if key not in best_genotype:
-            best_genotype[key] = 1.0
+        best_score *= score
 
-        best_genotype[key] *= score
-    print(best_genotype)
-    max_key = max(best_genotype, key = best_genotype.get)
-    best_score = math.log(best_genotype[max_key])
-    print(best_score)
-    return (best_score)
+    log_score = math.log(best_score)
+    print(log_score)
+    return (log_score)
 
 
 def find_somatic(cancer_bam, normal_bam):
@@ -74,23 +70,25 @@ def find_somatic(cancer_bam, normal_bam):
             print("Insufficient coverage at position: " + str(pos))
         else:
             suff_coverage.append(pos)
+            
             nbases = []
             for nread in ncol.pileups:
                 nbase = nread.alignment.query_sequence[nread.query_position]
                 nbases.append(nbase.upper())
+                
             cbases = []
             for read in col.pileups:
                 base = read.alignment.query_sequence[read.query_position]
                 cbases.append(base.upper())
+                
             best_genotype, best_score = likelihood_of_genotypes(nbases)
             if best_score < -50:
                 print("Position " + str(pos) + " has ambiguous genotype.")
+                
             else:
-                print(best_genotype)
                 somatic_score = likelihood_of_cancer(cbases, best_genotype)
                 if somatic_score < -75:
-                    print("Position " + str(pos) + " has a candidate somatic mutation (Log-likelihood= " + str(somatic_score) + ")")
-            
+                    print("Position " + str(pos) + " has a candidate somatic mutation (Log-likelihood= " + str(somatic_score) + ")")            
 
 
 if __name__ == "__main__":
@@ -100,9 +98,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
     try:
         cancer_bam = pysam.AlignmentFile(args.c)
+    except Exception:
+        print("An invalid cancer bam file was input, please check filenames and try again.")
+    try:
         normal_bam = pysam.AlignmentFile(args.n)
     except Exception:
-        print("An invalid file was input, please check filenames and try again.")
+        print("An invalid normal bam file was input, please check filenames and try again.")
+        
     find_somatic(cancer_bam, normal_bam)
 
     
