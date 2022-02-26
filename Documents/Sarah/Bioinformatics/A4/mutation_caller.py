@@ -22,9 +22,9 @@ def b_given_X(b, x):
 def likelihood_of_genotypes(bases):
     diploid_genotypes = [('A','A'), ('C','C'), ('G','G'), ('T','T'), ('A','C'), ('A','G'), ('A','T'), ('C','G'), ('C','T'), ('G','T')]
     best_genotype = {}
-    for base in bases:
+    for G in diploid_genotypes:
         score = 1.0
-        for G in diploid_genotypes:
+        for base in bases:
             score = b_given_X_Y(base.upper(), G[0], G[1])
             key = ''.join(G)
             if key not in best_genotype:
@@ -75,12 +75,17 @@ def find_somatic(cancer_bam, normal_bam):
             for nread in ncol.pileups:
                 nbase = nread.alignment.query_sequence[nread.query_position]
                 nbases.append(nbase.upper())
+
+            #print(nbases)
                 
             cbases = []
             for read in col.pileups:
                 base = read.alignment.query_sequence[read.query_position]
                 cbases.append(base.upper())
-                
+
+           # print(cbases)
+           #print("c coverage: " + str(c_coverage) +  
+            
             best_genotype, best_score = likelihood_of_genotypes(nbases)
             if best_score < -50:
                 print("Position " + str(pos) + " has ambiguous genotype.")
