@@ -2,6 +2,8 @@ import argparse
 import numpy as np
 
 def make_training_array(training_set):
+    """ This function trains a zero-order Markov chain model"""
+
     seq_len = len(training_set[0].strip())
 
     training_model = np.empty((4, seq_len), dtype=object)
@@ -22,6 +24,8 @@ def make_training_array(training_set):
     return training_model
 
 def make_output_file(training_array, output_file):
+    """ This function takes a training array and creates a nicely formatted tab-delimited file"""
+
     headers = "Position"
     num_positions = training_array.shape[1]
     for pos in range(num_positions):
@@ -47,6 +51,9 @@ def make_output_file(training_array, output_file):
 
 
 if __name__ == "__main__":
+    """This function takes in a training set of ESEs and creates a tab-delimited file containing a zero-order
+     Markov chain model"""
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", required=True, type=str, help="input the training set file")
     parser.add_argument("-o",required=True, type=str, help="input the output file")
