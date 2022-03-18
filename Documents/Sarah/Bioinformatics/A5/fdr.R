@@ -5,12 +5,12 @@ spec <- matrix(c(
   'output','o',2, "character"
 ), byrow=TRUE, ncol=4)
 
-input <- "p05pvalues.tsv"
-output <- "pvalues.corrected.tsv"
+#input <- "p05pvalues.tsv"
+#output <- "pvalues.corrected.tsv"
 
-#opt = getopt(spec)
-#input <- opt$input
-#output <- opt$output
+opt = getopt(spec)
+input <- opt$input
+output <- opt$output
 
 data <- read.table(file=input, sep = '\t', header = TRUE, fill = TRUE)
 ordered <- data[order(data$pvalue),]
@@ -27,12 +27,14 @@ for (j in rownames(ordered)) {
   p_val <- row$pvalue
   q_val <- round(p_val*ratio, digits=6)
   q_vals[[i]] <- q_val
-  row$pvalue <- round(row$pvalue, digits=6)
+  #row$pvalue <- round(row$pvalue, digits=6)
   if(q_val <= 0.05){
     num_qval <- num_qval + 1
   }
   i <- i+1
 }
+
+ordered$pvalue <- round(ordered$pvalue, digits=6)
 
 ordered$qvalue <- q_vals
 
