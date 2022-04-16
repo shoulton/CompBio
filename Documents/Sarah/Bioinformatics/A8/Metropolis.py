@@ -107,3 +107,5 @@ plt.savefig(args.o)
 print('Lambda Mean:', round(np.mean(mchain[100:NREP,0]), 3))
 print('p1 Mean:', round(np.mean(mchain[100:NREP,1]), 3))
 print('p2 Mean:', round(np.mean(mchain[100:NREP,2]), 3))
+
+plt.show()
